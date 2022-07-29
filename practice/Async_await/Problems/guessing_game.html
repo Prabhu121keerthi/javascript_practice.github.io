@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    const enterNumber = () => {
+      return new Promise((resolve, reject) => {
+        const userInput = Number(prompt("Enter number between 1 and 6"));
+        const randomInput = Math.floor(Math.random() * 6 + 1);
+
+        if(isNaN(userInput)) {
+          reject(new Error("wrong input type"));
+        }
+
+        if(userInput === randomInput) {
+
+          resolve({
+            points: 2,
+            randomInput
+          });
+        }
+        else if( userInput === randomInput + 1 
+                  || userInput === randomInput - 1) {
+
+                    resolve({
+            points: 1,
+            randomInput
+          });
+
+        }
+        else {
+
+          resolve({
+            points: 0,
+            randomInput
+          });
+
+        }
+
+      })
+    }
+
+    const continueGame = () => {
+
+      return new Promise((resolve, reject) => {
+
+        const check = confirm('Do you want to continue?');
+
+        if(check) {
+          resolve(true);
+        }
+        else {
+          resolve(false);
+        }
+      })
+
+    }
+
+    
+    const handleGuess = async () => {
+      try {
+      const result = await enterNumber();
+      alert(`Dice: ${result.randomInput}, U got ${result.points}`);
+
+      const isContinuing = await continueGame();
+
+      if(isContinuing) {
+        handleGuess();
+      }
+      else {
+        alert("Game Ends!");
+      }
+
+      }
+      catch(error) {
+        alert(error);
+      }
+    };
+
+    handleGuess();
+
+  </script>
+</body>
+</html>
